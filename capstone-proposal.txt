@@ -2,7 +2,7 @@ Capstone Project Proposal - Social Safe (working title)
 
 
 Concept
-  Problem - In the time of Covid people want - and need - to go out and socialize with friends, family and loved ones. However, they often carry an uneasiness about whether their favorite restaurants, cafes, and bars are safely following social distancing practices. Further, in seasonal climates wh`en the weather is cold, one doesn't know whether there are heat lamps or other features which would make outdoor socializing possible or enjoyable.
+  Problem - In the time of Covid people want - and need - to go out and socialize with friends, family and loved ones. However, they often carry an uneasiness about whether their favorite restaurants, cafes, and bars are safely following social distancing practices. Further, in seasonal climates when the weather is cold, one doesn't know whether there are heat lamps or other features which would make outdoor socializing possible or enjoyable.
 
   Purpose - The Social Safe app would provide a resource for users to review restaurants, cafes and bars for general information such as location, ratings, photos, menus, etc., as well as providing crowd sourced information about social distancing and presence of heat lamps.
 
@@ -11,18 +11,19 @@ Concept
 
 Features
   - API pull of NYC (or Brooklyn?) restaurant data using Hoppit or Zomato
-  - Full CRUD - ability to create, read, update, and delete restaurants
+  - Full CRUD - ability to create, read, update, and delete restaurants the user adds
   - Ability to "like" restaurants and add reviews
   - Ability to add information about social distancing and heat lamps
-  - User login, password, and profile functionality
+  - Register, login and password functionality
   - An index page with cards of all restaurants and ability to search
   - A show page that displays more in depth information about the restaurant, including user reviews
-  - A "My Page" feature that includes cards of any restaurants I've added or liked.
+  - A "My Page" feature that includes cards of any restaurants user added or liked.
 
 
 Technologies
   - Python/Flask
   - React
+  - SQL
   - CSS framework such as Tailwind UI, Bulma, or Bootstrap
 
 
@@ -31,4 +32,5 @@ Stretch Goals
 
 
 Nice to Have's
-  -Delete modal asking is sure want to delete entry of business.
+  - Delete modal asking is sure want to delete entry of business.
+  - User profile information
