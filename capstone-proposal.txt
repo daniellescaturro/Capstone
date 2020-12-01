@@ -10,9 +10,7 @@ Concept
 
 
 Features
-  - API pull of NYC (or Brooklyn?) restaurant data using Hoppit or Zomato
   - Full CRUD - ability to create, read, update, and delete restaurants the user adds
-  - Ability to "like" restaurants and add reviews
   - Ability to add information about social distancing and heat lamps
   - Register, login and password functionality
   - An index page with cards of all restaurants and ability to search
@@ -25,12 +23,22 @@ Technologies
   - React
   - SQL
   - CSS framework such as Tailwind UI, Bulma, or Bootstrap
+  - Deployment - TBD
 
 
 Stretch Goals
+  - API pull of NYC (or Brooklyn?) restaurant data using Yelp, Hoppit or Zomato
   - API pull of Covid restaurant violations and complaints from NYC Open Data and integrate that data into the app.
+  - Ability to "like" restaurants and add reviews
 
 
 Nice to Have's
   - Delete modal asking is sure want to delete entry of business.
   - User profile information
+
+Yelp Information
+  - Client ID
+    gLnJdINJwTgbQ2qDsH1RgQ
+
+    - API Key
+      qtRxFBWCo3VmtnTbf95_TbanMIP_5x0ZjqKiGfLqVj12HnSXjULlBNTWfEh8oA4fUkg3_k7REPYg5HmhmJzae5KEqXfSyMeGrAfRBG5Z93hCR_NSdwxXKqWTKxvFX3Yx
