@@ -30,13 +30,13 @@ class Restaurant(Model):
     name = CharField()
     image_url = CharField()
     url = CharField()
-    review_count = SMALLINT(5)
+    review_count = SmallIntegerField()
     title = CharField()
-    rating = Decimal(3,2)
+    rating = DecimalField(2,1)
     address1 = CharField()
     city = CharField()
     state = CharField()
-    zip_code = SMALLINT(5)
+    zip_code = SmallIntegerField()
     DateTimeField(default=datetime.datetime.now)
 
     class Meta:
