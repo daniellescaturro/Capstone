@@ -57,9 +57,12 @@ class Review(Model):
     comments = CharField()
     DateTimeField(default=datetime.datetime.now)
 
+    class Meta:
+        database = DATABASE
+
 
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([User, Restaurant], safe=True)
+    DATABASE.create_tables([User, Restaurant, Review], safe=True)
     print("TABLES Created")
     DATABASE.close()

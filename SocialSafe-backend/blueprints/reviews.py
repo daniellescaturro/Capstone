@@ -43,16 +43,16 @@ def get_my_reviews():
 
 
 # CREATE ROUTE - POST NEW REVIEW
-@review.route('/', methods=["POST"])
-def create_review():
+@review.route('/<restaurantid>', methods=["POST"])
+def create_review(restaurantid):
     payload = request.get_json()
     print(type(payload), 'payload')
 
     review = models.Review.create(
         uploader=current_user.id,
-        id=restaurant.id,
+        id=restaurantid,
         rating=payload['rating'],
-        #social_distancing_rating=payload['social_distancing_rating']
+        social_distancing_rating=payload['social_distancing_rating'],
         comments=payload['comments']
     )
 
