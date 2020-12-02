@@ -22,7 +22,7 @@ Technologies
   - Python/Flask
   - React
   - SQL
-  - CSS framework such as Tailwind UI, Bulma, or Bootstrap
+  - CSS framework such as Tailwind UI, Bulma, Bootstrap, Material UI
   - Deployment - TBD
 
 

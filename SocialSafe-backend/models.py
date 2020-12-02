@@ -5,12 +5,15 @@ from flask_login import UserMixin
 from playhouse.db_url import connect
 
 
-if 'ON_HEROKU' in os.environ: # later we will manually add this env var
-                              # in heroku so we can write this code
-    DATABASE = connect(os.environ.get('DATABASE_URL')) # heroku will add this
-                                                     # env var for you
-                                                     # when you provision the
-                                                     # Heroku Postgres Add-on
+if 'ON_HEROKU' in os.environ:
+    # later we will manually add this env var
+    # in heroku so we can write this code
+
+    DATABASE = connect(os.environ.get('DATABASE_URL'))
+        # heroku will add this
+        # env var for you
+        # when you provision the
+        # Heroku Postgres Add-on
 else:
     DATABASE = SqliteDatabase('restaurants.sqlite')
 
@@ -26,7 +29,6 @@ class User(UserMixin, Model):
 
 class Restaurant(Model):
     uploader = ForeignKeyField(User, backref='restaurants')
-    id = CharField()
     name = CharField()
     image_url = CharField()
     url = CharField()
@@ -37,10 +39,24 @@ class Restaurant(Model):
     city = CharField()
     state = CharField()
     zip_code = SmallIntegerField()
+    heat_lamps = BooleanField(default=False)
     DateTimeField(default=datetime.datetime.now)
 
     class Meta:
         database = DATABASE
+
+    def from_yelp(cls, yelp_record):
+        return cls()
+
+
+class Review(Model):
+    id = ForeignKeyField(Restaurant, backref='reviews')
+    uploader = ForeignKeyField(User, backref='reviews')
+    rating = DecimalField(2,1)
+    social_distancing_rating = DecimalField(2,1)
+    comments = CharField()
+    DateTimeField(default=datetime.datetime.now)
+
 
 def initialize():
     DATABASE.connect()
