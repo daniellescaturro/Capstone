@@ -20,7 +20,7 @@ def to_dict(obj):
     else:
         return obj
 
-# READ ROUTE - GET ALL REVIEWS
+# READ ROUTE - GET ALL REVIEWS -- CHECKED
 @review.route('/', methods=["GET"])
 def get_all_reviews():
     try:
@@ -32,7 +32,7 @@ def get_all_reviews():
 
 
 # READ ROUTE - GET MY REVIEWS
-@review.route('/mypage', methods=["GET"])
+@review.route('/myreviews', methods=["GET"])
 def get_my_reviews():
     try:
         reviews = [to_dict(model_to_dict(reviews)) for review in current_user.reviews]
@@ -42,7 +42,7 @@ def get_my_reviews():
         return jsonify(data={}, status={"code": 401, "message": "Error getting the resources"})
 
 
-# CREATE ROUTE - POST NEW REVIEW
+# CREATE ROUTE - POST NEW REVIEW -- CHECKED
 @review.route('/<restaurantid>', methods=["POST"])
 def create_review(restaurantid):
     payload = request.get_json()
@@ -58,8 +58,8 @@ def create_review(restaurantid):
 
     print(review.__dict__)
     print(dir(review))
-    print(model_to_dict(review), 'model to dict')
-    review_dict = model_to_dict(review)
+    print(to_dict(model_to_dict(review)), 'model to dict')
+    review_dict = to_dict(model_to_dict(review))
     return jsonify(data=review_dict, status={"code": 201, "message": "Success"})
 
 
