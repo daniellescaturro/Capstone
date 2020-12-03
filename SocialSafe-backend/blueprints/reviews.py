@@ -20,37 +20,37 @@ def to_dict(obj):
     else:
         return obj
 
-# READ ROUTE - GET ALL REVIEWS -- CHECKED
+# READ ROUTE - GET ALL REVIEWS
 @review.route('/', methods=["GET"])
 def get_all_reviews():
     try:
-        reviews = [to_dict(model_to_dict(review)) for review in models.Review.select()]
+        reviews = [to_dict(model_to_dict(review_to_add)) for review_to_add in models.Review.select()]
         print(reviews)
         return jsonify(data=reviews, status={"code": 201, "message": "Success"})
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "Error getting resources"})
 
 
-# READ ROUTE - GET MY REVIEWS
+# READ ROUTE - GET MY REVIEWS - IS THIS NEEDED?  -- DOESN'T WORK
 @review.route('/myreviews', methods=["GET"])
 def get_my_reviews():
     try:
-        reviews = [to_dict(model_to_dict(reviews)) for review in current_user.reviews]
+        reviews = [to_dict(model_to_dict(review)) for review in current_user.reviews]
         print(reviews)
         return jsonify(data=reviews, status={"code": 201, "message": "Success"})
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "Error getting the resources"})
 
 
-# CREATE ROUTE - POST NEW REVIEW -- CHECKED
-@review.route('/<restaurantid>', methods=["POST"])
-def create_review(restaurantid):
+# CREATE ROUTE - POST NEW REVIEW
+@review.route('/<restaurant_id>', methods=["POST"])
+def create_review(restaurant_id):
     payload = request.get_json()
     print(type(payload), 'payload')
 
     review = models.Review.create(
         uploader=current_user.id,
-        id=restaurantid,
+        restaurant_id=restaurant_id,
         rating=payload['rating'],
         social_distancing_rating=payload['social_distancing_rating'],
         comments=payload['comments']
@@ -63,7 +63,7 @@ def create_review(restaurantid):
     return jsonify(data=review_dict, status={"code": 201, "message": "Success"})
 
 
-# SHOW ROUTE - IS THIS NEEDED
+# SHOW ROUTE
 @review.route('/<id>', methods=['GET'])
 def get_one_review(id):
     review = models.Review.get_by_id(id)
@@ -84,7 +84,7 @@ def update_review(id):
 
 
 # DELETE ROUTE
-@review.route('/mypage/<id>', methods=["Delete"])
+@review.route('/<id>', methods=["Delete"])
 def delete_review(id):
     delete_query = models.Review.delete().where(models.Review.id==id)
     num_of_rows_deleted = delete_query.execute()

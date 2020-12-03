@@ -50,7 +50,7 @@ class Restaurant(Model):
 
 
 class Review(Model):
-    id = ForeignKeyField(Restaurant, backref='reviews')
+    restaurant_id = ForeignKeyField(Restaurant, backref='reviews')
     uploader = ForeignKeyField(User, backref='reviews')
     rating = DecimalField(2,1)
     social_distancing_rating = DecimalField(2,1)
