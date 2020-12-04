@@ -61,8 +61,17 @@ class Review(Model):
         database = DATABASE
 
 
+class Favorite(Model):
+    restaurant_id = ForeignKeyField(Restaurant, backref='favorite')
+    uploader = ForeignKeyField(User, backref='favorite')
+    favorite = BooleanField(default=False)
+
+    class Meta:
+        database = DATABASE
+
+
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([User, Restaurant, Review], safe=True)
+    DATABASE.create_tables([User, Restaurant, Review, Favorite], safe=True)
     print("TABLES Created")
     DATABASE.close()

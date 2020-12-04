@@ -2,6 +2,7 @@ from flask import Flask, jsonify, g
 from blueprints.restaurants import restaurant
 from blueprints.users import user
 from blueprints.reviews import review
+from blueprints.favorites import favorite
 import models
 from flask_login import LoginManager
 
@@ -31,6 +32,7 @@ def load_user(user_id):
 app.register_blueprint(restaurant, url_prefix='/api/v1/restaurants')
 app.register_blueprint(user, url_prefix='/api/v1/users')
 app.register_blueprint(review, url_prefix='/api/v1/reviews')
+app.register_blueprint(favorite, url_prefix='/api/v1/favorites')
 
 
 @app.before_request

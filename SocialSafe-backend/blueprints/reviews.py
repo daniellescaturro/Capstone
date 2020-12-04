@@ -31,7 +31,7 @@ def get_all_reviews():
         return jsonify(data={}, status={"code": 401, "message": "Error getting resources"})
 
 
-# READ ROUTE - GET MY REVIEWS - IS THIS NEEDED?  -- DOESN'T WORK
+# READ ROUTE - GET MY REVIEWS 
 @review.route('/myreviews', methods=["GET"])
 def get_my_reviews():
     try:
