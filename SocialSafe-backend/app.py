@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, g
+from flask_cors import CORS, cross_origin
 from blueprints.restaurants import restaurant
 from blueprints.users import user
 from blueprints.reviews import review
@@ -18,6 +19,19 @@ login_manager = LoginManager()
 
 login_manager.init_app(app)
 
+
+CORS(restaurant, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(review, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(favorite, origins=['http://localhost:3000'], supports_credentials=True)
+
+
+app.register_blueprint(restaurant, url_prefix='/api/v1/restaurants')
+app.register_blueprint(user, url_prefix='/api/v1/users')
+app.register_blueprint(review, url_prefix='/api/v1/reviews')
+app.register_blueprint(favorite, url_prefix='/api/v1/favorites')
+
+
 @login_manager.user_loader
 def load_user(user_id):
     try:
@@ -28,11 +42,6 @@ def load_user(user_id):
 
     except models.DoesNotExist:
         return None
-
-app.register_blueprint(restaurant, url_prefix='/api/v1/restaurants')
-app.register_blueprint(user, url_prefix='/api/v1/users')
-app.register_blueprint(review, url_prefix='/api/v1/reviews')
-app.register_blueprint(favorite, url_prefix='/api/v1/favorites')
 
 
 @app.before_request

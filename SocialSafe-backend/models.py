@@ -62,8 +62,8 @@ class Review(Model):
 
 
 class Favorite(Model):
-    restaurant_id = ForeignKeyField(Restaurant, backref='favorite')
-    uploader = ForeignKeyField(User, backref='favorite')
+    restaurant_id = ForeignKeyField(Restaurant, backref='favorites', on_delete="CASCADE")
+    uploader = ForeignKeyField(User, backref='favorites', on_delete="CASCADE")
     favorite = BooleanField(default=False)
 
     class Meta:
