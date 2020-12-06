@@ -20,7 +20,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-CORS(restaurant, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(restaurant, origins=['http://localhost:3000', 'http://localhost:3000/add_restaurant'], supports_credentials=True)
 CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(review, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(favorite, origins=['http://localhost:3000'], supports_credentials=True)
@@ -41,6 +41,7 @@ def load_user(user_id):
         return user
 
     except models.DoesNotExist:
+        print("no current_user")
         return None
 
 

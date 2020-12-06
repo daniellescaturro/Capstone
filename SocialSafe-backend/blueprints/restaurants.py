@@ -18,6 +18,8 @@ def to_dict(obj):
         return d
     elif isinstance(obj, Decimal):
         return float(obj)
+    elif isinstance(obj, list):
+        return [to_dict(a) for a in obj]
     else:
         return obj
 
@@ -25,7 +27,9 @@ def to_dict(obj):
 @restaurant.route('/', methods=["GET"])
 def get_all_restaurants():
     try:
-        restaurants = [to_dict(model_to_dict(restaurant)) for restaurant in models.Restaurant.select()]
+        aa = list(models.prefetch(models.Restaurant.select(), models.Review.select()))
+        print("Reviews", aa[0].reviews)
+        restaurants = [to_dict(model_to_dict(restaurant, backrefs=True)) for restaurant in aa]
         print(restaurants)
         return jsonify(data=restaurants, status={"code": 201, "message": "Success"})
     except models.DoesNotExist:
@@ -44,17 +48,19 @@ def get_my_restaurants():
 
 
 # CREATE ROUTE - POST NEW RESTAURANT
-@restaurant.route('/mypage/create', methods=["POST"])
+@restaurant.route('/add', methods=["POST"])
 def create_restaurant():
     payload = request.get_json()
-    print(type(payload), 'payload')
+    print(payload, 'payload')
+    print("user", current_user)
+
 
     restaurant = models.Restaurant.create(
         uploader=current_user.id,
         name=payload['name'],
         image_url=payload['image_url'],
         url=payload['url'],
-        review_count=payload['review_count'],
+        review_count=0,
         title=payload['title'],
         rating=payload['rating'],
         address1=payload['address1'],

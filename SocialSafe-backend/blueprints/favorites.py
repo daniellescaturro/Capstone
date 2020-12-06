@@ -35,7 +35,7 @@ def get_all_favorites():
 @favorite.route('/myfavorites', methods=["GET"])
 def get_my_favorites():
     try:
-        favorites = [to_dict(model_to_dict(favorite)) for favorite in current_user.favorites]
+        favorites = [to_dict(model_to_dict(favorite)) for favorite in current_user.favorites.filter(favorite=True)]
 
         return jsonify(data=favorites, status={"code": 201, "message": "Success"})
     except models.DoesNotExist as e:
