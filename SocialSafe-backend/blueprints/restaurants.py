@@ -29,11 +29,13 @@ def get_all_restaurants():
     try:
         aa = list(models.prefetch(models.Restaurant.select(), models.Review.select()))
         print("Reviews", aa[0].reviews)
-        restaurants = [to_dict(model_to_dict(restaurant, backrefs=True)) for restaurant in aa]
+        restaurants = [to_dict(model_to_dict(restaurant)) for restaurant in aa]
         print(restaurants)
         return jsonify(data=restaurants, status={"code": 201, "message": "Success"})
-    except models.DoesNotExist:
+    except Exception as e:
+        print(e)
         return jsonify(data={}, status={"code": 401, "message": "Error getting resources"})
+
 
 
 # READ ROUTE - GET MY RESTAURANTS
@@ -86,7 +88,7 @@ def get_one_restaurant(id):
 
 
 # UPDATE ROUTE
-@restaurant.route('/mypage/<id>', methods=["PUT"])
+@restaurant.route('/<id>', methods=["PUT"])
 def update_restaurant(id):
     payload = request.get_json()
     print(payload)
@@ -98,7 +100,7 @@ def update_restaurant(id):
 
 
 # DELETE ROUTE
-@restaurant.route('/mypage/<id>', methods=["Delete"])
+@restaurant.route('/<id>', methods=["Delete"])
 def delete_restaurant(id):
     delete_query = models.Restaurant.delete().where(models.Restaurant.id==id)
     num_of_rows_deleted = delete_query.execute()

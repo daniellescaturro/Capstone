@@ -50,8 +50,8 @@ class Restaurant(Model):
 
 
 class Review(Model):
-    restaurant_id = ForeignKeyField(Restaurant, backref='reviews')
-    uploader = ForeignKeyField(User, backref='reviews')
+    restaurant_id = ForeignKeyField(Restaurant, backref='reviews', on_delete="CASCADE")
+    uploader = ForeignKeyField(User, backref='reviews', on_delete="CASCADE")
     rating = DecimalField(2,1)
     social_distancing_rating = DecimalField(2,1)
     comments = CharField()
