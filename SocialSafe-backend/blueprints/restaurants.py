@@ -105,6 +105,9 @@ def delete_restaurant(id):
     delete_query = models.Restaurant.delete().where(models.Restaurant.id==id)
     num_of_rows_deleted = delete_query.execute()
     print(num_of_rows_deleted)
+    # clean up favorites
+    models.Favorite.delete().where(models.Favorite.restaurant_id == id).execute()
+    models.Review.delete().where(models.Review.restaurant_id == id).execute()
 
     return jsonify(
     data={},
