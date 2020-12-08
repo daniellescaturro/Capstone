@@ -29,7 +29,7 @@ def get_all_restaurants():
     try:
         aa = list(models.prefetch(models.Restaurant.select(), models.Review.select()))
         print("Reviews", aa[0].reviews)
-        restaurants = [to_dict(model_to_dict(restaurant)) for restaurant in aa]
+        restaurants = [to_dict(model_to_dict(restaurant, backrefs=True)) for restaurant in aa]
         print(restaurants)
         return jsonify(data=restaurants, status={"code": 201, "message": "Success"})
     except Exception as e:
