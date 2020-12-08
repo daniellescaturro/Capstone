@@ -84,7 +84,7 @@ def create_restaurant():
 def get_one_restaurant(id):
     restaurant = models.Restaurant.get_by_id(id)
     print(restaurant.__dict__)
-    return jsonify(data=to_dict(model_to_dict(restaurant)), status={"code": 200, "message": "Success"})
+    return jsonify(data=to_dict(model_to_dict(restaurant, backrefs=True)), status={"code": 200, "message": "Success"})
 
 
 # UPDATE ROUTE
@@ -95,7 +95,7 @@ def update_restaurant(id):
 
     query = models.Restaurant.update(**payload).where(models.Restaurant.id==id)
     query.execute()
-    restaurant = to_dict(model_to_dict(models.Restaurant.get_by_id(id)))
+    restaurant = to_dict(model_to_dict(models.Restaurant.get_by_id(id), backrefs=True))
     return jsonify(data=restaurant, status={"code": 200, "message": "Success"})
 
 

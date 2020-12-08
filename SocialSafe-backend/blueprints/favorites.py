@@ -17,6 +17,8 @@ def to_dict(obj):
         return d
     elif isinstance(obj, Decimal):
         return float(obj)
+    elif isinstance(obj, list):
+        return [to_dict(a) for a in obj]
     else:
         return obj
 
@@ -35,7 +37,7 @@ def get_all_favorites():
 @favorite.route('/myfavorites', methods=["GET"])
 def get_my_favorites():
     try:
-        favorites = [to_dict(model_to_dict(favorite)) for favorite in current_user.favorites.filter(favorite=True)]
+        favorites = [to_dict(model_to_dict(favorite, backrefs=True)) for favorite in current_user.favorites.filter(favorite=True)]
 
         return jsonify(data=favorites, status={"code": 201, "message": "Success"})
     except models.DoesNotExist as e:
