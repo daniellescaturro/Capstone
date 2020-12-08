@@ -100,7 +100,7 @@ def update_restaurant(id):
 
 
 # DELETE ROUTE
-@restaurant.route('/<id>', methods=["Delete"])
+@restaurant.route('/<id>', methods=["DELETE"])
 def delete_restaurant(id):
     delete_query = models.Restaurant.delete().where(models.Restaurant.id==id)
     num_of_rows_deleted = delete_query.execute()
@@ -114,12 +114,3 @@ def delete_restaurant(id):
     message="Successfully deleted {} item with id {}".format(num_of_rows_deleted, id),
     status={"code": 200, "message": "Success"}
     )
-
-
-# --------------------------------------
-# API pull code
-# token = 'qtRxFBWCo3VmtnTbf95_TbanMIP_5x0ZjqKiGfLqVj12HnSXjULlBNTWfEh8oA4fUkg3_k7REPYg5HmhmJzae5KEqXfSyMeGrAfRBG5Z93hCR_NSdwxXKqWTKxvFX3Yx'
-# headers = {'Authorization': f'Bearer {token}'}
-# r = requests.get('https://api.yelp.com/v3/businesses/search?categories=restaurants&categories=bars&location=brooklyn, ny', headers=headers)
-# print(r.json())
-# --------------------------------------

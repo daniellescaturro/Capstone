@@ -31,7 +31,7 @@ def get_all_reviews():
         return jsonify(data={}, status={"code": 401, "message": "Error getting resources"})
 
 
-# READ ROUTE - GET MY REVIEWS 
+# READ ROUTE - GET MY REVIEWS
 @review.route('/myreviews', methods=["GET"])
 def get_my_reviews():
     try:
@@ -84,7 +84,7 @@ def update_review(id):
 
 
 # DELETE ROUTE
-@review.route('/<id>', methods=["Delete"])
+@review.route('/<id>', methods=["DELETE"])
 def delete_review(id):
     delete_query = models.Review.delete().where(models.Review.id==id)
     num_of_rows_deleted = delete_query.execute()
