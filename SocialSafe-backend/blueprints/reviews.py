@@ -46,21 +46,35 @@ def get_my_reviews():
 @review.route('/<restaurant_id>', methods=["POST"])
 def create_review(restaurant_id):
     payload = request.get_json()
-    print(type(payload), 'payload')
+    if restaurant_id == "-1":
+        restaurant = payload['restaurant']
+        from_db = list(models.Restaurant.select().where(models.Restaurant.name == restaurant['name']).where(models.Restaurant.address1 == restaurant['address1']))
 
-    review = models.Review.create(
-        uploader=current_user.id,
-        restaurant_id=restaurant_id,
-        rating=payload['rating'],
-        social_distancing_rating=payload['social_distancing_rating'],
-        comments=payload['comments']
-    )
-
-    print(review.__dict__)
-    print(dir(review))
-    print(to_dict(model_to_dict(review)), 'model to dict')
-    review_dict = to_dict(model_to_dict(review))
-    return jsonify(data=review_dict, status={"code": 201, "message": "Success"})
+        restaurant.pop('uploader')
+        restaurant.pop('reviews')
+        if from_db:
+            res = from_db[0]
+        else:
+            res = models.Restaurant.create(uploader=current_user.id, **restaurant)
+        review = models.Review.create(
+            uploader=current_user.id,
+            restaurant_id=res.id,
+            rating=payload['review']['rating'],
+            social_distancing_rating=payload['review']['social_distancing_rating'],
+            comments=payload['review']['comments']
+        )
+        review_dict = to_dict(model_to_dict(review))
+        return jsonify(data=review_dict, status={"code": 201, "message": "Success"})
+    else:
+        review = models.Review.create(
+            uploader=current_user.id,
+            restaurant_id=restaurant_id,
+            rating=payload['rating'],
+            social_distancing_rating=payload['social_distancing_rating'],
+            comments=payload['comments']
+        )
+        review_dict = to_dict(model_to_dict(review))
+        return jsonify(data=review_dict, status={"code": 201, "message": "Success"})
 
 
 # SHOW ROUTE

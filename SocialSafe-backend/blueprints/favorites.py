@@ -30,7 +30,8 @@ def get_all_favorites():
         favorites = [to_dict(model_to_dict(favorite_to_add)) for favorite_to_add in models.Favorite.select()]
         print(favorites)
         return jsonify(data=favorites, status={"code": 201, "message": "Success"})
-    except models.DoesNotExist:
+    except models.DoesNotExist as e:
+        print(e)
         return jsonify(data={}, status={"code": 401, "message": "Error getting resources"})
 
 # READ ROUTE - GET MY FAVORITES
@@ -41,6 +42,7 @@ def get_my_favorites():
 
         return jsonify(data=favorites, status={"code": 201, "message": "Success"})
     except models.DoesNotExist as e:
+        print(e)
         return jsonify(data={}, status={"code": 401, "message": "Error getting the resources"})
 
 
@@ -48,19 +50,32 @@ def get_my_favorites():
 @favorite.route('/<restaurant_id>', methods=["POST"])
 def create_favorite(restaurant_id):
     payload = request.get_json()
-    print(type(payload), 'payload')
+    if restaurant_id == "-1":
+        restaurant = payload['restaurant']
+        from_db = list(models.Restaurant.select().where(models.Restaurant.name == restaurant['name']).where(models.Restaurant.address1 == restaurant['address1']))
 
-    favorite = models.Favorite.create(
-        restaurant_id=restaurant_id,
-        uploader=current_user.id,
-        favorite=payload['favorite']
-    )
+        restaurant.pop('uploader')
+        restaurant.pop('reviews')
+        if from_db:
+            res = from_db[0]
+        else:
+            res = models.Restaurant.create(uploader=current_user.id, **restaurant)
+        favorite = models.Favorite.create(
+            restaurant_id=res.id,
+            uploader=current_user.id,
+            favorite=payload['favorite']
+        )
+        favorite_dict = to_dict(model_to_dict(favorite))
+        return jsonify(data=favorite_dict, status={"code": 201, "message": "Success"})
+    else:
 
-    print(favorite.__dict__)
-    print(dir(favorite))
-    print(to_dict(model_to_dict(favorite)), 'model to dict')
-    favorite_dict = to_dict(model_to_dict(favorite))
-    return jsonify(data=favorite_dict, status={"code": 201, "message": "Success"})
+        favorite = models.Favorite.create(
+            restaurant_id=restaurant_id,
+            uploader=current_user.id,
+            favorite=payload['favorite']
+        )
+        favorite_dict = to_dict(model_to_dict(favorite))
+        return jsonify(data=favorite_dict, status={"code": 201, "message": "Success"})
 
 # UPDATE ROUTE
 @favorite.route('/<id>', methods=["PUT"])

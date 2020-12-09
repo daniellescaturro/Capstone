@@ -5,6 +5,7 @@ from decimal import *
 from flask import Blueprint, jsonify, request
 from playhouse.shortcuts import model_to_dict
 from flask_login import current_user, login_required
+from utils import getRestaurants
 
 restaurant = Blueprint('restaurants', 'restaurant')
 
@@ -48,6 +49,20 @@ def get_my_restaurants():
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "Error getting the resources"})
 
+
+@restaurant.route("/search", methods=["GET"])
+def search_restaurant():
+    location = request.args.get('location')
+    print(request.args)
+    if location:
+        token = 'qtRxFBWCo3VmtnTbf95_TbanMIP_5x0ZjqKiGfLqVj12HnSXjULlBNTWfEh8oA4fUkg3_k7REPYg5HmhmJzae5KEqXfSyMeGrAfRBG5Z93hCR_NSdwxXKqWTKxvFX3Yx'
+        headers = {'Authorization': f'Bearer {token}'}
+        r = requests.get('https://api.yelp.com/v3/businesses/search?categories=restaurant&location={}&limit=50'.format(location), headers=headers)
+
+        payload = r.json()
+        data = getRestaurants(payload, current_user)
+        return jsonify(data=data, status={"code": 200, "message": "Success"})
+    return jsonify(data={}, status={"code": 402, "message": "Success"})
 
 # CREATE ROUTE - POST NEW RESTAURANT
 @restaurant.route('/add', methods=["POST"])
