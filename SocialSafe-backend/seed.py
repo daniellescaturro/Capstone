@@ -4,7 +4,7 @@ import models
 
 token = 'qtRxFBWCo3VmtnTbf95_TbanMIP_5x0ZjqKiGfLqVj12HnSXjULlBNTWfEh8oA4fUkg3_k7REPYg5HmhmJzae5KEqXfSyMeGrAfRBG5Z93hCR_NSdwxXKqWTKxvFX3Yx'
 headers = {'Authorization': f'Bearer {token}'}
-r = requests.get('https://api.yelp.com/v3/businesses/search?categories=restaurant&location=brooklyn', headers=headers)
+r = requests.get('https://api.yelp.com/v3/businesses/search?categories=restaurant&location=brooklyn&limit=50', headers=headers)
 
 payloads= r.json()
 
