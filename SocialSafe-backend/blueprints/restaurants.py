@@ -45,6 +45,37 @@ def get_my_restaurants():
         return jsonify(data={}, status={"code": 401, "message": "Error getting the resources"})
 
 
+@restaurant.route("/seed", methods=["GET"])
+def seed_restaurants():
+    token = 'qtRxFBWCo3VmtnTbf95_TbanMIP_5x0ZjqKiGfLqVj12HnSXjULlBNTWfEh8oA4fUkg3_k7REPYg5HmhmJzae5KEqXfSyMeGrAfRBG5Z93hCR_NSdwxXKqWTKxvFX3Yx'
+    headers = {'Authorization': f'Bearer {token}'}
+    r = requests.get('https://api.yelp.com/v3/businesses/search?categories=restaurant&location=brooklyn&limit50', headers=headers)
+
+    payloads = r.json()
+
+    user = models.User.create(username='admin', email="admin@site.com", password="1234")
+    for payload in payloads["businesses"]:
+        print(json.dumps(payload, indent=4))
+
+        restaurant = models.Restaurant.create(
+            uploader=user,
+            name=payload['name'],
+            image_url=payload['image_url'],
+            url=payload['url'],
+            review_count=payload['review_count'],
+            title=payload['categories'][0]['title'],
+            rating=payload['rating'],
+            address1=payload['location']['address1'],
+            city=payload['location']['city'],
+            state=payload['location']['state'],
+            zip_code=payload['location']['zip_code']
+            )
+
+    aa = list(models.prefetch(models.Restaurant.select(), models.Review.select()))
+    restaurants = [to_dict(model_to_dict(restaurant, backrefs=True)) for restaurant in aa]
+    return jsonify(data=restaurants, status={"code": 200, "Message": "Success"})
+
+
 @restaurant.route("/search", methods=["GET"])
 def search_restaurant():
     location = request.args.get('location')
@@ -55,7 +86,7 @@ def search_restaurant():
 
         payload = r.json()
         data = getRestaurants(payload, current_user)
-        return jsonify(data=data, status={"code": 200, "message": "Success"})
+        return jsonify(data=data, status={"code": 200, "Message": "Success"})
     return jsonify(data={}, status={"code": 402, "message": "Success"})
 
 # CREATE ROUTE - POST NEW RESTAURANT
