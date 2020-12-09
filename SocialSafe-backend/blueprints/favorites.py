@@ -28,10 +28,8 @@ def to_dict(obj):
 def get_all_favorites():
     try:
         favorites = [to_dict(model_to_dict(favorite_to_add)) for favorite_to_add in models.Favorite.select()]
-        print(favorites)
         return jsonify(data=favorites, status={"code": 201, "message": "Success"})
     except models.DoesNotExist as e:
-        print(e)
         return jsonify(data={}, status={"code": 401, "message": "Error getting resources"})
 
 # READ ROUTE - GET MY FAVORITES
@@ -42,7 +40,6 @@ def get_my_favorites():
 
         return jsonify(data=favorites, status={"code": 201, "message": "Success"})
     except models.DoesNotExist as e:
-        print(e)
         return jsonify(data={}, status={"code": 401, "message": "Error getting the resources"})
 
 
@@ -68,7 +65,6 @@ def create_favorite(restaurant_id):
         favorite_dict = to_dict(model_to_dict(favorite))
         return jsonify(data=favorite_dict, status={"code": 201, "message": "Success"})
     else:
-
         favorite = models.Favorite.create(
             restaurant_id=restaurant_id,
             uploader=current_user.id,
@@ -93,8 +89,7 @@ def update_favorite(id):
 def delete_favorite(id):
     delete_query = models.Favorite.delete().where(models.Favorite.id==id)
     num_of_rows_deleted = delete_query.execute()
-    print(num_of_rows_deleted)
-
+    
     return jsonify(
     data={},
     message="Successfully deleted {} item with id {}".format(num_of_rows_deleted, id),

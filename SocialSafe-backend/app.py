@@ -12,6 +12,10 @@ PORT = 8000
 
 app = Flask(__name__)
 
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_SAMESITE='None'
+)
 
 app.secret_key = "This is a secret key. Here it is."
 
@@ -35,26 +39,22 @@ app.register_blueprint(favorite, url_prefix='/api/v1/favorites')
 @login_manager.user_loader
 def load_user(user_id):
     try:
-        print("loading the following user")
         user = models.User.get_by_id(user_id)
 
         return user
 
     except models.DoesNotExist:
-        print("no current_user")
         return None
 
 
 @app.before_request
 def before_request():
-    """Connect to the database before each request."""
     g.db = models.DATABASE
     g.db.connect()
 
 
 @app.after_request
 def after_request(response):
-    """Close the database connection after each request."""
     g.db.close()
     return response
 

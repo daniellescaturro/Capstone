@@ -14,10 +14,9 @@ def test_user_resource():
 @user.route('/register', methods=['POST'])
 def register():
     payload = request.get_json()
-    # print(payload)
     payload['email'] = payload['email'].lower()
     payload['username'] = payload['username'].lower()
-    # print(payload)
+
     try:
         models.User.get(models.User.email == payload['email'])
 
@@ -37,8 +36,7 @@ def register():
         )
 
         created_user_dict = model_to_dict(created_user)
-        print(created_user_dict)
-
+        
         login_user(created_user)
 
         created_user_dict.pop('password')

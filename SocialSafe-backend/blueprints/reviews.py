@@ -25,7 +25,6 @@ def to_dict(obj):
 def get_all_reviews():
     try:
         reviews = [to_dict(model_to_dict(review_to_add)) for review_to_add in models.Review.select()]
-        print(reviews)
         return jsonify(data=reviews, status={"code": 201, "message": "Success"})
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "Error getting resources"})
@@ -36,7 +35,6 @@ def get_all_reviews():
 def get_my_reviews():
     try:
         reviews = [to_dict(model_to_dict(review)) for review in current_user.reviews]
-        print(reviews)
         return jsonify(data=reviews, status={"code": 201, "message": "Success"})
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "Error getting the resources"})
@@ -49,13 +47,14 @@ def create_review(restaurant_id):
     if restaurant_id == "-1":
         restaurant = payload['restaurant']
         from_db = list(models.Restaurant.select().where(models.Restaurant.name == restaurant['name']).where(models.Restaurant.address1 == restaurant['address1']))
-
         restaurant.pop('uploader')
         restaurant.pop('reviews')
+
         if from_db:
             res = from_db[0]
         else:
             res = models.Restaurant.create(uploader=current_user.id, **restaurant)
+
         review = models.Review.create(
             uploader=current_user.id,
             restaurant_id=res.id,
@@ -63,8 +62,10 @@ def create_review(restaurant_id):
             social_distancing_rating=payload['review']['social_distancing_rating'],
             comments=payload['review']['comments']
         )
+
         review_dict = to_dict(model_to_dict(review))
         return jsonify(data=review_dict, status={"code": 201, "message": "Success"})
+
     else:
         review = models.Review.create(
             uploader=current_user.id,
@@ -81,7 +82,6 @@ def create_review(restaurant_id):
 @review.route('/<id>', methods=['GET'])
 def get_one_review(id):
     review = models.Review.get_by_id(id)
-    print(review.__dict__)
     return jsonify(data=to_dict(model_to_dict(review)), status={"code": 200, "message": "Success"})
 
 
@@ -89,7 +89,6 @@ def get_one_review(id):
 @review.route('/<id>', methods=["PUT"])
 def update_review(id):
     payload = request.get_json()
-    print(payload)
 
     query = models.Review.update(**payload).where(models.Review.id==id)
     query.execute()
@@ -102,8 +101,7 @@ def update_review(id):
 def delete_review(id):
     delete_query = models.Review.delete().where(models.Review.id==id)
     num_of_rows_deleted = delete_query.execute()
-    print(num_of_rows_deleted)
-
+    
     return jsonify(
     data={},
     message="Successfully deleted {} item with id {}".format(num_of_rows_deleted, id),

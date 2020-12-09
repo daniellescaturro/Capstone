@@ -29,14 +29,10 @@ def to_dict(obj):
 def get_all_restaurants():
     try:
         aa = list(models.prefetch(models.Restaurant.select(), models.Review.select()))
-        print("Reviews", aa[0].reviews)
         restaurants = [to_dict(model_to_dict(restaurant, backrefs=True)) for restaurant in aa]
-        print(restaurants)
         return jsonify(data=restaurants, status={"code": 201, "message": "Success"})
     except Exception as e:
-        print(e)
         return jsonify(data={}, status={"code": 401, "message": "Error getting resources"})
-
 
 
 # READ ROUTE - GET MY RESTAURANTS
@@ -44,7 +40,6 @@ def get_all_restaurants():
 def get_my_restaurants():
     try:
         restaurants = [to_dict(model_to_dict(restaurant)) for restaurant in current_user.restaurants]
-        print(restaurants)
         return jsonify(data=restaurants, status={"code": 201, "message": "Success"})
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "Error getting the resources"})
@@ -53,7 +48,6 @@ def get_my_restaurants():
 @restaurant.route("/search", methods=["GET"])
 def search_restaurant():
     location = request.args.get('location')
-    print(request.args)
     if location:
         token = 'qtRxFBWCo3VmtnTbf95_TbanMIP_5x0ZjqKiGfLqVj12HnSXjULlBNTWfEh8oA4fUkg3_k7REPYg5HmhmJzae5KEqXfSyMeGrAfRBG5Z93hCR_NSdwxXKqWTKxvFX3Yx'
         headers = {'Authorization': f'Bearer {token}'}
@@ -68,9 +62,6 @@ def search_restaurant():
 @restaurant.route('/add', methods=["POST"])
 def create_restaurant():
     payload = request.get_json()
-    print(payload, 'payload')
-    print("user", current_user)
-
 
     restaurant = models.Restaurant.create(
         uploader=current_user.id,
@@ -87,9 +78,6 @@ def create_restaurant():
         heat_lamps=payload['heat_lamps']
     )
 
-    print(restaurant.__dict__)
-    print(dir(restaurant))
-    print(model_to_dict(restaurant), 'model to dict')
     restaurant_dict = model_to_dict(restaurant)
     return jsonify(data=restaurant_dict, status={"code": 201, "message": "Success"})
 
@@ -98,7 +86,6 @@ def create_restaurant():
 @restaurant.route('/<id>', methods=['GET'])
 def get_one_restaurant(id):
     restaurant = models.Restaurant.get_by_id(id)
-    print(restaurant.__dict__)
     return jsonify(data=to_dict(model_to_dict(restaurant, backrefs=True)), status={"code": 200, "message": "Success"})
 
 
@@ -106,7 +93,6 @@ def get_one_restaurant(id):
 @restaurant.route('/<id>', methods=["PUT"])
 def update_restaurant(id):
     payload = request.get_json()
-    print(payload)
 
     query = models.Restaurant.update(**payload).where(models.Restaurant.id==id)
     query.execute()
@@ -119,8 +105,6 @@ def update_restaurant(id):
 def delete_restaurant(id):
     delete_query = models.Restaurant.delete().where(models.Restaurant.id==id)
     num_of_rows_deleted = delete_query.execute()
-    print(num_of_rows_deleted)
-    # clean up favorites
     models.Favorite.delete().where(models.Favorite.restaurant_id == id).execute()
     models.Review.delete().where(models.Review.restaurant_id == id).execute()
 
