@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, g
 from flask_cors import CORS, cross_origin
 from blueprints.restaurants import restaurant
@@ -63,13 +64,16 @@ def after_request(response):
 def idex():
     return "Hello"
 
+
 @app.route('/sayhi/<username>')
 def hello(username):
     return "Hello {}".format(username)
-#
-# if 'ON_HEROKU' in os.environ:
-#   print('\non heroku!')
-#   models.initialize()
+
+
+if 'ON_HEROKU' in os.environ:
+  print('\non heroku!')
+  models.initialize()
+
 
 if __name__ == '__main__':
     models.initialize()

@@ -1,6 +1,6 @@
+import os
 from peewee import *
 import datetime
-import os
 from flask_login import UserMixin
 from playhouse.db_url import connect
 
