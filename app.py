@@ -25,10 +25,10 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-CORS(restaurant, origins=['http://localhost:3000', 'http://localhost:3000/add_restaurant'], supports_credentials=True)
-CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
-CORS(review, origins=['http://localhost:3000'], supports_credentials=True)
-CORS(favorite, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(restaurant, origins=['http://localhost:3000', 'http://localhost:3000/add_restaurant', 'https://socialsafe.herokuapp.com'], supports_credentials=True)
+CORS(user, origins=['http://localhost:3000', 'https://socialsafe.herokuapp.com'], supports_credentials=True)
+CORS(review, origins=['http://localhost:3000', 'https://socialsafe.herokuapp.com'], supports_credentials=True)
+CORS(favorite, origins=['http://localhost:3000', 'https://socialsafe.herokuapp.com'], supports_credentials=True)
 
 
 app.register_blueprint(restaurant, url_prefix='/api/v1/restaurants')
