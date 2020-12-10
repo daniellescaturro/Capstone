@@ -1,1 +1,1 @@
-web: gunicorn SocialSafe-backend.app:app
+web: gunicorn SocialSafe_backend.app:app
