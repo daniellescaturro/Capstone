@@ -1,11 +1,11 @@
 import os
 from flask import Flask, jsonify, g
 from flask_cors import CORS, cross_origin
-from blueprints.restaurants import restaurant
-from blueprints.users import user
-from blueprints.reviews import review
-from blueprints.favorites import favorite
-import models
+from .blueprints.restaurants import restaurant
+from .blueprints.users import user
+from .blueprints.reviews import review
+from .blueprints.favorites import favorite
+import SocialSafe_backend.models as models
 from flask_login import LoginManager
 
 DEBUG = True

@@ -1,11 +1,11 @@
-import models
+import SocialSafe_backend.models as models
 import requests
 import json
 from decimal import *
 from flask import Blueprint, jsonify, request
 from playhouse.shortcuts import model_to_dict
 from flask_login import current_user, login_required
-from utils import getRestaurants
+from SocialSafe_backend.utils import getRestaurants
 
 restaurant = Blueprint('restaurants', 'restaurant')
 

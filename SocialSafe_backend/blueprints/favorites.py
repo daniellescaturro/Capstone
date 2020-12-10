@@ -1,4 +1,4 @@
-import models
+import SocialSafe_backend.models as models
 import json
 from decimal import *
 from flask import Blueprint, jsonify, request
@@ -89,7 +89,7 @@ def update_favorite(id):
 def delete_favorite(id):
     delete_query = models.Favorite.delete().where(models.Favorite.id==id)
     num_of_rows_deleted = delete_query.execute()
-    
+
     return jsonify(
     data={},
     message="Successfully deleted {} item with id {}".format(num_of_rows_deleted, id),

@@ -1,4 +1,4 @@
-import models
+import SocialSafe_backend.models as models
 from flask import Blueprint, request, jsonify
 from flask_bcrypt import generate_password_hash, check_password_hash
 from playhouse.shortcuts import model_to_dict
@@ -36,7 +36,7 @@ def register():
         )
 
         created_user_dict = model_to_dict(created_user)
-        
+
         login_user(created_user)
 
         created_user_dict.pop('password')

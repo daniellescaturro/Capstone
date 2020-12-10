@@ -1,4 +1,4 @@
-import models
+import SocialSafe_backend.models as models
 import json
 from decimal import *
 from flask import Blueprint, jsonify, request
@@ -101,7 +101,7 @@ def update_review(id):
 def delete_review(id):
     delete_query = models.Review.delete().where(models.Review.id==id)
     num_of_rows_deleted = delete_query.execute()
-    
+
     return jsonify(
     data={},
     message="Successfully deleted {} item with id {}".format(num_of_rows_deleted, id),

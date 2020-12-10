@@ -1,4 +1,4 @@
-from models import Restaurant
+from SocialSafe_backend.models import Restaurant
 from playhouse.shortcuts import model_to_dict
 
 def getRestaurants(payloads, user):
